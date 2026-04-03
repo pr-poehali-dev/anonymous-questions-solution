@@ -1,0 +1,13 @@
+{
+  "tests": [
+    {
+      "name": "Submit vote with custom text",
+      "method": "POST",
+      "path": "/",
+      "body": {"category_id": 1, "custom_text": "test answer"},
+      "expectedStatus": 200,
+      "expectedBody": {"ok": true},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

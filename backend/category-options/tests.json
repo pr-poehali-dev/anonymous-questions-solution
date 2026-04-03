@@ -1,0 +1,12 @@
+{
+  "tests": [
+    {
+      "name": "Get options for category",
+      "method": "GET",
+      "path": "/?category_id=1",
+      "expectedStatus": 200,
+      "expectedBody": {"options": []},
+      "bodyMatcher": "partial"
+    }
+  ]
+}
