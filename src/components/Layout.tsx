@@ -3,8 +3,7 @@ import Icon from "@/components/ui/icon";
 import { useRole } from "@/hooks/useRole";
 
 const navItems = [
-  { to: "/", label: "Вопросы", icon: "MessageSquare" },
-  { to: "/categories", label: "Категории", icon: "Tag" },
+  { to: "/", label: "Категории", icon: "LayoutGrid" },
   { to: "/analytics", label: "Аналитика", icon: "BarChart2" },
 ];
 
@@ -28,7 +27,7 @@ export default function Layout() {
             <NavLink
               key={item.to}
               to={item.to}
-              end={item.to === "/"}
+              end
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                   isActive

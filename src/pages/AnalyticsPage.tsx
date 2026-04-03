@@ -1,139 +1,109 @@
+import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 
 const STATS = [
-  { label: "Всего вопросов", value: "102", delta: "+12 за месяц", icon: "MessageSquare", positive: true },
-  { label: "Активных", value: "67", delta: "+5 за неделю", icon: "CheckCircle", positive: true },
-  { label: "Черновиков", value: "18", delta: "-3 за неделю", icon: "FileText", positive: false },
-  { label: "Всего ответов", value: "847", delta: "+104 за месяц", icon: "MessageCircle", positive: true },
+  { label: "Всего ответов", value: "195", delta: "+23 за неделю", icon: "Zap", positive: true },
+  { label: "Комментариев", value: "50", delta: "+8 за неделю", icon: "MessageCircle", positive: true },
+  { label: "Категорий", value: "4", delta: "", icon: "LayoutGrid", positive: true },
+  { label: "Участников", value: "38", delta: "+4 за месяц", icon: "Users", positive: true },
 ];
 
-const WEEKLY_DATA = [
-  { day: "Пн", questions: 4, answers: 18 },
-  { day: "Вт", questions: 7, answers: 31 },
-  { day: "Ср", questions: 3, answers: 12 },
-  { day: "Чт", questions: 9, answers: 44 },
-  { day: "Пт", questions: 6, answers: 27 },
-  { day: "Сб", questions: 2, answers: 8 },
-  { day: "Вс", questions: 1, answers: 5 },
+const CATEGORIES = [
+  { id: "1", name: "Что важно в работе", color: "#FBBF24", votes: 74, comments: 19 },
+  { id: "2", name: "Частые вопросы", color: "#34D399", votes: 61, comments: 27 },
+  { id: "3", name: "Что хотелось бы изменить", color: "#A78BFA", votes: 38, comments: 14 },
+  { id: "4", name: "Что не важно", color: "#94A3B8", votes: 22, comments: 9 },
 ];
 
-const TOP_CATEGORIES = [
-  { name: "Маркетинг", count: 24, pct: 94 },
-  { name: "Финансы", count: 18, pct: 71 },
-  { name: "Продажи", count: 15, pct: 59 },
-  { name: "Стратегия", count: 13, pct: 51 },
-  { name: "Менеджмент", count: 11, pct: 43 },
-];
+const maxVotes = Math.max(...CATEGORIES.map((c) => c.votes));
 
-const RECENT_ACTIVITY = [
-  { action: "Новый вопрос добавлен", item: "Как привлечь первых клиентов?", time: "2 ч. назад", icon: "Plus" },
-  { action: "Получен ответ", item: "Методики расчёта юнит-экономики", time: "4 ч. назад", icon: "MessageCircle" },
-  { action: "Статус изменён", item: "CRM системы для малого бизнеса", time: "вчера", icon: "RefreshCw" },
-  { action: "Категория создана", item: "Право", time: "вчера", icon: "Tag" },
-  { action: "Вопрос архивирован", item: "Правила GDPR для стартапов", time: "2 дня назад", icon: "Archive" },
+const RECENT = [
+  { cat: "Что важно в работе", type: "vote", text: "Чёткие задачи", time: "5 мин назад" },
+  { cat: "Частые вопросы", type: "comment", text: "Не могу найти актуальные регламенты...", time: "12 мин назад" },
+  { cat: "Что не важно", type: "vote", text: "Долгие митинги", time: "34 мин назад" },
+  { cat: "Что важно в работе", type: "comment", text: "Обратная связь от руководителя — это важно", time: "1 ч назад" },
+  { cat: "Что хотелось бы изменить", type: "vote", text: "Скорость процессов", time: "2 ч назад" },
 ];
-
-const maxAnswers = Math.max(...WEEKLY_DATA.map((d) => d.answers));
 
 export default function AnalyticsPage() {
+  const navigate = useNavigate();
+
   return (
     <div className="p-8 animate-fade-in">
       <div className="mb-8">
         <h1 className="text-xl font-semibold text-foreground">Аналитика</h1>
-        <p className="text-sm text-muted-foreground mt-0.5">Данные за последние 30 дней</p>
+        <p className="text-sm text-muted-foreground mt-0.5">Сводка активности по всем категориям</p>
       </div>
 
+      {/* Статы */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-        {STATS.map((stat, i) => (
+        {STATS.map((s, i) => (
           <div
-            key={stat.label}
-            className="border border-border rounded-lg p-4 bg-card animate-slide-up"
-            style={{ animationDelay: `${i * 60}ms` }}
+            key={s.label}
+            className="border border-border rounded-xl p-4 bg-card animate-slide-up"
+            style={{ animationDelay: `${i * 50}ms` }}
           >
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs text-muted-foreground">{stat.label}</span>
-              <div className="w-7 h-7 rounded bg-primary/10 flex items-center justify-center">
-                <Icon name={stat.icon} size={13} className="text-primary" />
+              <span className="text-xs text-muted-foreground">{s.label}</span>
+              <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
+                <Icon name={s.icon} size={13} className="text-primary" />
               </div>
             </div>
-            <div className="text-2xl font-semibold text-foreground mb-1">{stat.value}</div>
-            <div className={`text-xs ${stat.positive ? "text-emerald-400" : "text-rose-400"}`}>
-              {stat.delta}
-            </div>
+            <div className="text-2xl font-semibold text-foreground">{s.value}</div>
+            {s.delta && <div className="text-xs text-emerald-400 mt-1">{s.delta}</div>}
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 border border-border rounded-lg p-5 bg-card">
-          <h2 className="text-sm font-medium text-foreground mb-4">Активность за неделю</h2>
-          <div className="flex items-end gap-2 h-36">
-            {WEEKLY_DATA.map((d) => (
-              <div key={d.day} className="flex-1 flex flex-col items-center gap-1">
-                <div className="w-full flex flex-col items-center gap-0.5">
-                  <div
-                    className="w-full rounded-sm bg-primary/70 transition-all hover:bg-primary"
-                    style={{ height: `${(d.answers / maxAnswers) * 120}px` }}
-                    title={`${d.answers} ответов`}
-                  />
-                  <div
-                    className="w-full rounded-sm bg-primary/25"
-                    style={{ height: `${(d.questions / 9) * 30}px` }}
-                    title={`${d.questions} вопросов`}
-                  />
-                </div>
-                <span className="text-xs text-muted-foreground">{d.day}</span>
-              </div>
-            ))}
-          </div>
-          <div className="flex gap-4 mt-3 pt-3 border-t border-border">
-            <div className="flex items-center gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-sm bg-primary/70" />
-              <span className="text-xs text-muted-foreground">Ответы</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-sm bg-primary/25" />
-              <span className="text-xs text-muted-foreground">Вопросы</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="border border-border rounded-lg p-5 bg-card">
-          <h2 className="text-sm font-medium text-foreground mb-4">Топ категорий</h2>
-          <div className="flex flex-col gap-3">
-            {TOP_CATEGORIES.map((cat) => (
-              <div key={cat.name}>
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs text-foreground">{cat.name}</span>
-                  <span className="text-xs text-muted-foreground">{cat.count}</span>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Активность по категориям */}
+        <div className="border border-border rounded-xl p-5 bg-card">
+          <h2 className="text-sm font-medium text-foreground mb-5">Активность по категориям</h2>
+          <div className="flex flex-col gap-4">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => navigate(`/category/${cat.id}`)}
+                className="group text-left"
+              >
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-xs text-foreground group-hover:text-primary transition-colors">{cat.name}</span>
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1"><Icon name="Zap" size={10} />{cat.votes}</span>
+                    <span className="flex items-center gap-1"><Icon name="MessageCircle" size={10} />{cat.comments}</span>
+                  </div>
                 </div>
                 <div className="h-1.5 bg-secondary rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-primary rounded-full"
-                    style={{ width: `${cat.pct}%` }}
+                    className="h-full rounded-full transition-all duration-700"
+                    style={{ width: `${Math.round((cat.votes / maxVotes) * 100)}%`, backgroundColor: cat.color }}
                   />
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
 
-        <div className="lg:col-span-3 border border-border rounded-lg p-5 bg-card">
-          <h2 className="text-sm font-medium text-foreground mb-4">Последние события</h2>
+        {/* Лента активности */}
+        <div className="border border-border rounded-xl p-5 bg-card">
+          <h2 className="text-sm font-medium text-foreground mb-5">Последние события</h2>
           <div className="flex flex-col gap-1">
-            {RECENT_ACTIVITY.map((event, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-3 py-2.5 border-b border-border/40 last:border-0"
-              >
-                <div className="w-7 h-7 rounded bg-secondary flex items-center justify-center flex-shrink-0">
-                  <Icon name={event.icon} size={13} className="text-muted-foreground" />
+            {RECENT.map((r, i) => (
+              <div key={i} className="flex items-start gap-3 py-2.5 border-b border-border/30 last:border-0">
+                <div className={`w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                  r.type === "comment" ? "bg-primary/10" : "bg-amber-500/10"
+                }`}>
+                  <Icon
+                    name={r.type === "comment" ? "MessageCircle" : "Zap"}
+                    size={11}
+                    className={r.type === "comment" ? "text-primary" : "text-amber-400"}
+                  />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <span className="text-xs text-muted-foreground">{event.action}: </span>
-                  <span className="text-xs text-foreground">{event.item}</span>
+                  <div className="text-xs text-muted-foreground/70 mb-0.5">{r.cat}</div>
+                  <div className="text-xs text-foreground truncate">{r.text}</div>
                 </div>
-                <span className="text-xs text-muted-foreground/60 flex-shrink-0">{event.time}</span>
+                <span className="text-xs text-muted-foreground/40 flex-shrink-0">{r.time}</span>
               </div>
             ))}
           </div>
