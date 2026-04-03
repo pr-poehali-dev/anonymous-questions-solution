@@ -18,6 +18,10 @@ const MOCK_CATEGORIES: Category[] = [
   { id: 6, name: "Технологии", icon: "Cpu", count: 7, color: "#06B6D4" },
   { id: 7, name: "Право", icon: "Scale", count: 5, color: "#EF4444" },
   { id: 8, name: "Стратегия", icon: "Target", count: 13, color: "#F97316" },
+  { id: 9, name: "Что хотелось бы изменить", icon: "Pencil", count: 0, color: "#A78BFA" },
+  { id: 10, name: "Частые вопросы", icon: "HelpCircle", count: 0, color: "#34D399" },
+  { id: 11, name: "Что важно в работе", icon: "Star", count: 0, color: "#FBBF24" },
+  { id: 12, name: "Что не важно", icon: "MinusCircle", count: 0, color: "#94A3B8" },
 ];
 
 export default function CategoriesPage() {
